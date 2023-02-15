@@ -36,9 +36,9 @@ class ViewController: UIViewController {
     private lazy var firstButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 10
-        button.setTitle("Firs", for: .normal)
+        button.setTitle("", for: .normal)
         button.titleLabel?.textColor = .white
-        button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -46,9 +46,9 @@ class ViewController: UIViewController {
     private lazy var secondButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 10
-        button.setTitle("Firs", for: .normal)
+        button.setTitle("", for: .normal)
         button.titleLabel?.textColor = .white
-        button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -56,12 +56,15 @@ class ViewController: UIViewController {
     private lazy var thirdButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 10
-        button.setTitle("Firs", for: .normal)
+        button.setTitle("", for: .normal)
         button.titleLabel?.textColor = .white
-        button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    var quizBrain = QuizBrain()
+    let buttonsArray = [UIButton]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +82,40 @@ class ViewController: UIViewController {
         view.addSubview(firstButton)
         view.addSubview(secondButton)
         view.addSubview(thirdButton)
+        
+        updateUI()
+    }
+    
+    @objc private func updateUI() {
+        questionLabel.text = quizBrain.getQuestionText()
+        
+        let answer = quizBrain.getAnswer()
+        firstButton.setTitle(answer[0], for: .normal)
+        secondButton.setTitle(answer[1], for: .normal)
+        thirdButton.setTitle(answer[2], for: .normal)
+        
+        scoreLabel.text = "Score: \(quizBrain.getScore())"
+        
+        firstButton.backgroundColor = .systemFill
+        secondButton.backgroundColor = .systemFill
+        thirdButton.backgroundColor = .systemFill
+    }
+    
+    @objc private func buttonTapped(sender: UIButton) {
+        
+        let userAnswer = sender.currentTitle!
+        let userGotItRight = quizBrain.checkAnswer(userAnswer)
+        
+        if userGotItRight {
+            sender.backgroundColor = .green
+        } else {
+            sender.backgroundColor = .red
+        }
+        
+        quizBrain.nextQuestion()
+        
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
+    
     }
 }
 
@@ -98,7 +135,7 @@ extension ViewController {
             questionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             questionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
-            firstButton.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 250),
+            firstButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 550),
             firstButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             firstButton.heightAnchor.constraint(equalToConstant: 60),
             firstButton.widthAnchor.constraint(equalToConstant: 300),
