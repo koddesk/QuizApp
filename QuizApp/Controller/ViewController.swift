@@ -63,6 +63,16 @@ class ViewController: UIViewController {
         return button
     }()
     
+    private var progressBar: UIProgressView = {
+        let progressView = UIProgressView()
+        progressView.backgroundColor = .white
+        progressView.progressTintColor = .systemPink
+        progressView.layer.cornerRadius = 5
+        progressView.progress = 0.5
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        return progressView
+    }()
+    
     var quizBrain = QuizBrain()
     let buttonsArray = [UIButton]()
     
@@ -82,6 +92,7 @@ class ViewController: UIViewController {
         view.addSubview(firstButton)
         view.addSubview(secondButton)
         view.addSubview(thirdButton)
+        view.addSubview(progressBar)
         
         updateUI()
     }
@@ -95,6 +106,7 @@ class ViewController: UIViewController {
         thirdButton.setTitle(answer[2], for: .normal)
         
         scoreLabel.text = "Score: \(quizBrain.getScore())"
+        progressBar.progress = quizBrain.getProgress()
         
         firstButton.backgroundColor = .systemFill
         secondButton.backgroundColor = .systemFill
@@ -149,6 +161,11 @@ extension ViewController {
             thirdButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             thirdButton.heightAnchor.constraint(equalToConstant: 60),
             thirdButton.widthAnchor.constraint(equalToConstant: 300),
+            
+            progressBar.topAnchor.constraint(equalTo: thirdButton.bottomAnchor, constant: 10),
+            progressBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            progressBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            progressBar.heightAnchor.constraint(equalToConstant: 10)
         ])
     }
 }
