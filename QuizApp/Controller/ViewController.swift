@@ -13,7 +13,6 @@ class ViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "background")
         imageView.contentMode = .scaleAspectFill
-        
         return imageView
     }()
     
@@ -27,20 +26,22 @@ class ViewController: UIViewController {
     }()
     
     private lazy var firstChoiceButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.layer.cornerRadius = 10
-        button.setImage(UIImage(named: "choice1Background"), for: .normal)
-        button.titleLabel?.textColor = .white
+        button.setBackgroundImage(UIImage(named: "choice1Background"), for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitle("Take a left", for: .normal)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private lazy var secondChoiceButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.layer.cornerRadius = 10
-        button.setImage(UIImage(named: "choice2Background"), for: .normal)
-        button.titleLabel?.textColor = .white
+        button.setBackgroundImage(UIImage(named: "choice2Background"), for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitle("Take a right", for: .normal)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
